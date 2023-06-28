@@ -26,7 +26,7 @@ public class App {
         Utility.clearScreen();
         int mni=3;
         // validar credenciales
-        System.out.println("\u001B[35m Ingrese sus credenciales para iniciar el programa ");
+        System.out.println("\u001B[35mIngrese sus credenciales para iniciar el programa ");
         do{
         System.out.println("Nuero de intentos: "+mni + "/3");        
         System.out.print("Ingrese su usuario: ");
@@ -86,15 +86,13 @@ public class App {
 
                             break;
                         case 2: 
-                                String rutaArchivo = "\\\\Nasimba.Maicol\\MNarchivos\\202110105-CHUNCHO JIMENEZ ANGEL DAVID.csv";
-                                Map<String, Set<String>> datosSeparados = leerArchivoCSV(rutaArchivo);
+                            String rutaArchivo = "src\\MNarchivos\\202110105-CHUNCHO JIMENEZ ANGEL DAVID.csv";
+                            Set<String> segmentos = leerArchivoCSV(rutaArchivo);
 
-                                // Imprimir los datos separados por categorías
-                                for (Map.Entry<String, Set<String>> entry : datosSeparados.entrySet()) {
-                                    String categoria = entry.getKey();
-                                    Set<String> datos = entry.getValue();
-                                    System.out.println(categoria + ": " + datos);
-                                }
+                            // Imprimir los segmentos
+                            for (String segmento : segmentos) {
+                                System.out.print(segmento+"  ");
+                            }
                         
 
                     
@@ -167,32 +165,22 @@ public class App {
         return nombreCompleto;
     }
 
-    public static Map<String, Set<String>> leerArchivoCSV(String rutaArchivo) {
-        Map<String, Set<String>> datosSeparados = new LinkedHashMap<>();
+    public static Set<String> leerArchivoCSV(String rutaArchivo) {
+        Set<String> segmentos = new HashSet<>();
 
         try (BufferedReader br = new BufferedReader(new FileReader(rutaArchivo))) {
             String primeraLinea = br.readLine();
             if (primeraLinea != null) {
-                String[] categorias = primeraLinea.split(";");
-                for (String categoria : categorias) {
-                    datosSeparados.put(categoria, new HashSet<>());
-                }
-            }
-
-            String linea;
-            while ((linea = br.readLine()) != null) {
-                String[] datos = linea.split(";");
-                int index = 0;
-                for (String categoria : datosSeparados.keySet()) {
-                    datosSeparados.get(categoria).add(datos[index]);
-                    index++;
+                String[] segmentosArray = primeraLinea.split(";");
+                for (String segmento : segmentosArray) {
+                    segmentos.add(segmento);
                 }
             }
         } catch (IOException e) {
             e.printStackTrace();
         }
 
-        return datosSeparados;
+        return segmentos;
     }
 
 }
