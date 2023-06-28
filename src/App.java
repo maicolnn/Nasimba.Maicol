@@ -1,32 +1,21 @@
+import java.io.File;
 import java.rmi.server.SocketSecurityException;
 import java.util.Scanner;
 import MNUtility.Utility;
 
 public class App {
+    private String horarioRutaDirectorio;
     public static final String mnCedula = "1754491494";
     public static final String mnCorreo = "maicol.nasimba@epn.edu.ec";
     public static final String mnNombre = "MAICOL ESTUARDO NASIMBA QUINGA";
     static char flecha = (char) 16;
-
+    public static Scanner mnSc = new Scanner(System.in); 
     public static void main(String[] args) throws Exception {
-        Scanner mnSc = new Scanner(System.in);        
+       
         mnmostrarDatos();
         System.out.println("\nPresione enter para continuar...");
         mnSc.nextLine();
         Utility.clearScreen();
-
-        mnValidarCredenciales(mnSc);
-        if(mnLogin(mnCorreo, mnCedula)){
-        System.out.println("XD");
-        
-        }
-
-
-
-    }
-
-
-    private static void mnValidarCredenciales(Scanner mnSc) {
         int mni=3;
         // validar credenciales
         System.out.println("Ingrese sus credenciales para iniciar el programa ");
@@ -47,15 +36,80 @@ public class App {
                 }
             }
             if(mnLogin(mnUsuario,mnClave)){
-                mostrarCredenciales(mnUsuario, mnClave);
-                System.out.println("\t BIENVENIDO: \u001B[33m"+mnUsuario.toUpperCase());
+                mnMostrarCredenciales(mnUsuario, mnClave);
+                System.out.println("\u001B[33m\t BIENVENIDO: "+mnUsuario.toUpperCase());
+                System.out.println("\nPresione enter para continuar...");
+                mnSc.nextLine();
+                Utility.clearScreen();
+                boolean mnBandV = false;
+                while(mnBandV==false){
+                    mnMenuPrincipal(mnUsuario);
+                    int mnOpcion = Utility.NasimbagetNumeroPositivo("Ingrese una opcion: ");
+                    Utility.clearScreen();
+                    if (mnOpcion < 0  || mnOpcion > 4) {
+                        System.out.println("[x] Entrada no aceptada. Intente de nuevo");
+                        continue;
+                    }
+                
+                    switch(mnOpcion){
+                        case 0:
+                            mnBandV = true;
+                            System.out.println("Regrsa pronto "+ mnUsuario.toUpperCase());
+                            break;
+                        case 1:
+                            System.out.println("\u001B[33m[+] Listado de Profesores:");
+                            String mnNombreArchivo = "XD202110105-CHUNCHO JIMENEZ ANGEL DAVID.csv";
+                            String mnRutaArchivo = mnObtenerRuta(mnNombreArchivo);
+                            String nombreArchivoCompleto = mnObtenerNombreArchivo(mnRutaArchivo);
+                            System.out.println("\t- " + nombreArchivoCompleto);
+
+                            String mnNombreArchivo2 = "202111083-HIDALGO CRUZ PABLO ESTEBAN.csv";
+                            String mnRutaArchivo2 = mnObtenerRuta(mnNombreArchivo2);
+                            String mnNombreArchivoCompleto2 = mnObtenerNombreArchivo(mnRutaArchivo2);
+                            System.out.println("\t- " + mnNombreArchivoCompleto2);
+
+                            String mnNombreArchivo3 = "202120757-ALEMAN OSORIO CARLOS ALEJANDRO.csv";
+                            String mnRutaArchivo3 = mnObtenerRuta(mnNombreArchivo3);
+                            String mnNombreArchivoCompleto3 = mnObtenerNombreArchivo(mnRutaArchivo3);
+                            System.out.println("\t- " + mnNombreArchivoCompleto3);
+                            System.out.println("\nPresione enter para continuar...");
+                            mnSc.nextLine();
+                            Utility.clearScreen();
+
+                            break;
+                        case 2: 
+                        
+
+                    
+                    }
+
+                }
+
 
                 break;
             }
 
 
         }while(mni>0);
+
     }
+
+
+    private static void mnMenuPrincipal(String mnUsuario) {
+        System.out.println("\u001B[34m------------------");
+        System.out.println("Carga horaria de profesores");
+        System.out.println("------------------");
+        System.out.println("Usuario: "+mnUsuario.toUpperCase()+"\n");
+        System.out.println(flecha+" 1 Visualizar titulo");
+        System.out.println(flecha+" 2 Visualizar profesores");
+        System.out.println(flecha+" 3 Visualizar Horario");
+        System.out.println(flecha+" 4 Visualizar horaio de un titulo");
+        System.out.println(flecha+" 0 Salir");
+    }
+
+
+
+    
 
 
     private static void mnmostrarDatos(){
@@ -71,7 +125,7 @@ public class App {
     public static boolean mnLogin(String mnUsuario, String mnClave) {
             return ((mnUsuario.equals("profe") && mnClave.equals("1234"))||(mnUsuario.equals("maicol.nasimba@epn.edu.ec") && mnClave.equals("1754491494"))); // Credenciales válidas
     }
-    public static void mostrarCredenciales(String mnUsuario, String mnClave) {
+    public static void mnMostrarCredenciales(String mnUsuario, String mnClave) {
         System.out.println(flecha+ " Usuario: " + mnUsuario);
         System.out.print(flecha+" Clave: ");
         for (int i = 0; i < mnClave.length(); i++) {
@@ -79,5 +133,22 @@ public class App {
         }
         System.out.println();
     }
+
+    public static String mnObtenerRuta(String nombreArchivo) {
+        String rutaRelativa = "\\\\MNarchivos\\";
+        File archivo = new File(rutaRelativa, nombreArchivo);
+        return archivo.getPath();
+    }
+
+    public static String mnObtenerNombreArchivo(String rutaArchivo) {
+        File archivo = new File(rutaArchivo);
+        String nombreCompleto = archivo.getName();
+        int indicePunto = nombreCompleto.lastIndexOf(".");
+        if (indicePunto != -1) {
+            return nombreCompleto.substring(0, indicePunto);
+        }
+        return nombreCompleto;
+    }
+    
 
 }
