@@ -26,7 +26,7 @@ public class App {
         Utility.clearScreen();
         int mni=3;
         // validar credenciales
-        System.out.println("\\u001B[35mIngrese sus credenciales para iniciar el programa ");
+        System.out.println("\u001B[35m Ingrese sus credenciales para iniciar el programa ");
         do{
         System.out.println("Nuero de intentos: "+mni + "/3");        
         System.out.print("Ingrese su usuario: ");
@@ -130,7 +130,7 @@ public class App {
 
 
     private static void mnmostrarDatos(){
-        System.out.println("\\u001B[32m----------------------");
+        System.out.println("\u001B[32m----------------------");
         System.out.println("\t DATOS");
         System.out.println("----------------------");
         System.out.println("- CEDULA: " + mnCedula);
